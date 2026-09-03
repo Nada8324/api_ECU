@@ -22,14 +22,19 @@ class DoctorItem extends StatelessWidget {
             width: 100.w,
             height: 100.h,
             fit: .cover,
-            errorBuilder: (context, error, stackTrace) =>
-                Image.asset("assets/images/doctor.jpg", width: 100.w,
-            height: 100.h,
-            fit: .cover,),
+            errorBuilder: (context, error, stackTrace) {
+              return Image.asset(
+                "assets/images/doctor.jpg",
+                width: 100.w,
+                height: 100.h,
+                fit: .cover,
+              );
+            },
           ),
           SizedBox(width: 10.w),
           Expanded(
             child: Column(
+              spacing: 8,
               crossAxisAlignment: .start,
               children: [
                 Text(
@@ -38,10 +43,7 @@ class DoctorItem extends StatelessWidget {
                 ),
                 Text(model.specialization),
                 Row(
-                  children: [
-                    Icon(Icons.attach_money),
-                    Text("${model.appointPrice}"),
-                  ],
+                  children: [Icon(Icons.attach_money), Text("${model.price}")],
                 ),
                 Row(
                   children: [

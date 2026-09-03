@@ -3,7 +3,7 @@ class DoctorModel {
   final String photo;
   final String address;
   final String specialization;
-  final int appointPrice;
+  final int price;
   final String startTime;
 
   DoctorModel({
@@ -11,17 +11,18 @@ class DoctorModel {
     required this.photo,
     required this.address,
     required this.specialization,
-    required this.appointPrice,
+    required this.price,
     required this.startTime,
   });
+
   factory DoctorModel.fromJson(Map<String, dynamic> json) {
     return DoctorModel(
-      name: json['name'],
-      address: json['address'],
-      appointPrice: json['appoint_price'],
-      photo: json['photo'],
-      specialization: json['specialization']['name'],
-      startTime: json['start_time']
+      name: json["name"],
+      photo: json["photo"],
+      address: json["address"],
+      specialization: json["specialization"]["name"],
+      price: json["appoint_price"],
+      startTime: json['start_time'],
     );
   }
 }

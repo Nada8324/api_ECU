@@ -1,6 +1,8 @@
-import 'package:doctors_app/features/home/data/models/doctor_model.dart';
+import 'package:doctors_app/features/home/presentaion/cubit/cubit.dart';
+import 'package:doctors_app/features/home/presentaion/cubit/states.dart';
 import 'package:doctors_app/features/home/presentaion/widgets/doctor_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -22,16 +24,27 @@ class HomeScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: ListView.separated(
+        child: BlocBuilder<HomeCubit, HomeStates>(
+          builder: (context, state) {
+            if (state is HomeLoading) {
+              return CircularProgressIndicator();
+            }
+            if (state is HomeSuccess) {
+              return ListView.separated(
                 separatorBuilder: (context, index) => SizedBox(height: 15),
-                itemCount:4,
+                itemCount: state.doctorList.length,
                 itemBuilder: (context, index) {
-                 
-
-                  return DoctorItem(model: DoctorModel(name: "name", photo: "photo", address: "address", specialization: "specialization", appointPrice: 100, startTime: "startTime"),);
+                  final item = state.doctorList[index];
+                  return DoctorItem(model: item);
                 },
-              )
-       
+              );
+            }
+            if (state is HomeFailer) {
+              return Text(state.error, style: TextStyle(fontSize: 30));
+            }
+            return SizedBox();
+          },
+        ),
       ),
     );
   }
