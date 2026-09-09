@@ -1,6 +1,10 @@
 import 'package:doctors_app/core/widgets/text_form_field.dart';
 import 'package:doctors_app/features/login/presentation/screens/login_screen.dart';
+import 'package:doctors_app/features/register/data/models/register_model.dart';
+import 'package:doctors_app/features/register/presentaion/cubit/register_cubit.dart';
+import 'package:doctors_app/features/register/presentaion/cubit/register_states.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -18,7 +22,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController conformPasswordController =
       TextEditingController();
   final TextEditingController genderController = TextEditingController();
-  String? gender;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -125,7 +128,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         if (value!.isEmpty) {
                           return "please enter your name";
                         }
-                        if (value != 0.toString() || value != '1') {
+                        if (value != '0' && value != '1') {
                           return "value must be 0 or 1";
                         }
                         return null;
@@ -135,9 +138,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
               SizedBox(height: 20.h),
-              ElevatedButton(
-                onPressed: () {
-                  if (formKey.currentState!.validate()) {
+
+              BlocConsumer<RegisterCubit, RegisterStates>(
+                listener: (context, state) {
+                  if (state is RegisterSuccess) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text("Sign Up successful"),
@@ -150,8 +154,38 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       MaterialPageRoute(builder: (context) => LoginScreen()),
                     );
                   }
+                  if (state is RegisterFailer) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Sign Up failed"),
+                        duration: Duration(seconds: 3),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
                 },
-                child: Text("Sign Up"),
+                builder: (context, state) {
+                  return ElevatedButton(
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        context.read<RegisterCubit>().pressed(
+                          RegisterModel(
+                            name: nameController.text,
+                            phone: phoneController.text,
+                            email: emailController.text,
+                            gender: genderController.text,
+                            password: passwordController.text,
+                            conformationPassword:
+                                conformPasswordController.text,
+                          ),
+                        );
+                      }
+                    },
+                    child: state is RegisterLoading
+                        ? CircularProgressIndicator()
+                        : Text("Sign Up"),
+                  );
+                },
               ),
             ],
           ),

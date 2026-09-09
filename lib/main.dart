@@ -1,5 +1,6 @@
 import 'package:doctors_app/features/home/presentaion/cubit/cubit.dart';
 import 'package:doctors_app/features/home/presentaion/screens/home_screen.dart';
+import 'package:doctors_app/features/register/presentaion/cubit/register_cubit.dart';
 import 'package:doctors_app/features/register/presentaion/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,7 +19,10 @@ class MyApp extends StatelessWidget {
       designSize: Size(375, 812),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home:RegisterScreen()
+        home: BlocProvider(
+          create: (context) => RegisterCubit(),
+          child: RegisterScreen(),
+        ),
       ),
     );
   }

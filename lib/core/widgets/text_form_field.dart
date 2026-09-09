@@ -31,7 +31,7 @@ class CustomTextFormField extends StatelessWidget {
       ),
       child: TextFormField(
         controller: controller,
-        style: TextStyle(fontSize: 30.sp, color: Colors.black),
+        style: TextStyle(fontSize: 20.sp, color: Colors.black),
         validator: validator,
         keyboardType: keyboardType,
         decoration: InputDecoration(
