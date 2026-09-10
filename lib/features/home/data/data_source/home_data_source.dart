@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:doctors_app/core/local_storage/shared_pref.dart';
 import 'package:doctors_app/features/home/data/models/doctor_model.dart';
 
 class HomeDataSource {
@@ -7,16 +8,8 @@ class HomeDataSource {
   );
 
  static Future<List<DoctorModel>> getData() async {
-  //#########Login##############
-    Map<String, String> user = {
-      "email": "ahmednada@gmail.com",
-      "password": "123666",
-    };
-
-    final authResponse = await dio.post("/auth/login", data: user);
-    final String token = authResponse.data["data"]["token"];
-
-
+  
+  final token= await SharedPref.getToken();
 //###########get data##############
     final response = await dio.get(
       "/doctor/index",

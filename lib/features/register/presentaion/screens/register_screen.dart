@@ -1,4 +1,5 @@
 import 'package:doctors_app/core/widgets/text_form_field.dart';
+import 'package:doctors_app/features/login/presentation/cubit/login_cubit.dart';
 import 'package:doctors_app/features/login/presentation/screens/login_screen.dart';
 import 'package:doctors_app/features/register/data/models/register_model.dart';
 import 'package:doctors_app/features/register/presentaion/cubit/register_cubit.dart';
@@ -151,7 +152,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     );
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                      MaterialPageRoute(
+                        builder: (context) => BlocProvider(
+                          create: (context) => LoginCubit(),
+                          child: LoginScreen(),
+                        ),
+                      ),
                     );
                   }
                   if (state is RegisterFailer) {
@@ -186,6 +192,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         : Text("Sign Up"),
                   );
                 },
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BlocProvider(
+                        create: (context) => LoginCubit(),
+                        child: LoginScreen(),
+                      ),
+                    ),
+                  );
+                },
+                child: Text("login"),
               ),
             ],
           ),
